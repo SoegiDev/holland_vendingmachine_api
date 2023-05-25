@@ -1,2 +1,2 @@
-GET http://localhost:3000/api/banner/sync HTTP/1.1
+GET https://vm.hollandbakery.co.id/confirm/Other/video/?key=be296ac9d5b8bb41158c85f4d5f13caf45ba8f34&data=eyJ2bWNvZGUiOiJWTV9QTl8wMDIifQ== HTTP/1.1
 content-type: application/json

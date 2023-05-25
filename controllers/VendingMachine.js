@@ -34,16 +34,18 @@ module.exports.ListBanner = async (req, res, next) => {
       b: base64data,
       getSubs: jailbreak,
     };
-    axios({
-      method: "get",
-      paramUrl,
-    })
-      .then(function (response) {
-        console.log(response);
+    axios
+      .get(
+        "https://vm.hollandbakery.co.id/confirm/Other/video/?key=be296ac9d5b8bb41158c85f4d5f13caf45ba8f34&data=eyJ2bWNvZGUiOiJWTV9QTl8wMDIifQ=="
+      )
+      .then((response) => {
+        // Handle response
+        console.log(response.data);
         res.json(response.data);
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch((err) => {
+        // Handle errors
+        console.error(err);
       });
     //res.json(dataRet);
   } catch (ex) {
