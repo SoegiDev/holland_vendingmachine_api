@@ -1,0 +1,7 @@
+GET https://vm.hollandbakery.co.id/confirm/Other/video/?key=d8eeb50a387461c142cc4d5056a570676ac74d24&data=eyJ2bWNvZGUiOiJWTV9QTl8wMDIifQ== HTTP/1.1
+Content-Type: application/json
+Accept: */*,
+Cache-Control: no-cache,
+Connection: keep-alive,
+accept-encoding: gzip, deflate,
+cache-control: no-cache
