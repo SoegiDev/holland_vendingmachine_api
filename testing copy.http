@@ -1,0 +1,2 @@
+GET https://vm.hollandbakery.co.id/confirm/VmStock HTTP/1.1
+content-type: application/json
