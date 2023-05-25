@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cors());
 app.use(express.json());
 app.use(useragent.express());
-var db = require("./database");
+var db = require("./init_db");
 const vendingmachineRoute = require("./router/VendingMachine");
 
 app.listen(HTTP_PORT, () => {

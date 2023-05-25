@@ -1,13 +1,8 @@
 var sqlite3 = require("sqlite3").verbose();
 var md5 = require("md5");
 
-const DBSOURCE = "db_vm.sqlite";
+const DBSOURCE = "db_vm.sql";
 let db = new sqlite3.Database(DBSOURCE, (err) => {
-  const dt = new Date();
-  const year = dt.getFullYear();
-  const month = (dt.getMonth() + 1).toString().padStart(2, "0");
-  const day = dt.getDate().toString().padStart(2, "0");
-  console.log(year + "/" + month + "/" + day);
   if (err) {
     console.log(err.message);
     throw err;
@@ -90,36 +85,6 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
           (58, '2004', 'Chocolate John', 3, 9900, 8415, '1', './assets/media/product/2004.jpg', '2023-05-08 15:08:41', '2023-05-08 15:08:41'),
           (59, '4019', 'Risoles Ayam', 2, 8900, 7565, '1', './assets/media/product/4019.jpg', '2023-05-08 15:08:42', '2023-05-08 15:08:42'),
           (60, '5001', 'Lemper Ayam', 5, 9400, 7990, '1', './assets/media/product/5001.jpg', '2023-05-08 15:08:42', '2023-05-08 15:08:42');`);
-        }
-      }
-    );
-    db.run(
-      `CREATE TABLE trx_2023_05 (
-        id int(10) NOT NULL,
-        created DATETIME DEFAULT CURRENT_TIMESTAMP,
-        id_vm varchar(100) NOT NULL,
-        documentno varchar(60) NOT NULL,
-        no_slot varchar(10) NOT NULL,
-        kode_produk varchar(15) NOT NULL,
-        name_produk varchar(60) NOT NULL,
-        rear_status varchar(1) NOT NULL,
-        timestamp varchar(100) NOT NULL,
-        error_no varchar(30) NOT NULL,
-        error_msg varchar(255) NOT NULL,
-        payment_type varchar(150) NOT NULL,
-        verify_no longtext NOT NULL,
-        harga double NOT NULL,
-        harga_jual double NOT NULL,
-        issync char(1) NOT NULL,
-        updated DATETIME DEFAULT CURRENT_TIMESTAMP
-      ) `,
-      (err) => {
-        if (err) {
-          console.log("Table trx_2023_05 Already Created");
-        } else {
-          db.run(`INSERT INTO trx_2023_05 (id, created, id_vm, documentno, no_slot, kode_produk, name_produk, rear_status, timestamp, error_no, error_msg, payment_type, verify_no, harga, harga_jual, issync, updated) VALUES
-          (1, '2023-05-08 15:10:44', 'VM_PN_002', 'VM_PN_002-2305e37lmhzp6', '1', '1135', 'Roti Coklat Keju', '0', '1683533444563', '0,93,0,0,93,', 'Rear OK, Product Not Delivered', 'SHOPEEPAY', '1683533433', 12500, 1, '1', '2023-05-08 10:14:13'),
-          (2, '2023-05-08 15:10:55', 'VM_PN_002', 'VM_PN_002-2305e37lmhzp6', '3', '1657', 'Korean Garlic Cream Cheese', '0', '1683533455371', '0,93,0,0,93,', 'Rear OK, Product Not Delivered', 'SHOPEEPAY', '1683533433', 14900, 1, '1', '2023-05-08 10:14:13');`);
         }
       }
     );

@@ -1,5 +1,6 @@
 var sqlite3 = require("sqlite3").verbose();
-
+const DBSOURCE = "db_vm.db";
+let isExists = false;
 module.exports = function () {
   const prefixName = "trx";
   const dt = new Date();
@@ -27,15 +28,14 @@ module.exports = function () {
     updated DATETIME DEFAULT CURRENT_TIMESTAMP
   )`;
 
-  const DBSOURCE = "db_vm.sql";
   let checkdb = new sqlite3.Database(DBSOURCE, (err) => {
     checkdb.run(createTable, (err) => {
       if (err) {
-        console.log("Table Transaction Already Created");
         return false;
       } else {
         return true;
       }
     });
   });
+  return checkdb;
 };

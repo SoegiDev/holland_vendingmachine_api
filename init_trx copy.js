@@ -1,12 +1,29 @@
 var sqlite3 = require("sqlite3").verbose();
-
+const DBSOURCE = "db_vm.db";
+let isExists = false;
 module.exports = function () {
+  checkIfExists(function (err, isExists) {
+    let is = false;
+    console.log(err, isExists);
+    if (isExists !== undefined) {
+      console.log("ADA");
+      is = true;
+    } else {
+      is = false;
+    }
+  });
+};
+
+function checkIfExists(callback) {
+  var db = new sqlite3.Database(DBSOURCE);
+
   const prefixName = "trx";
   const dt = new Date();
   const year = dt.getFullYear();
   const month = (dt.getMonth() + 1).toString().padStart(2, "0");
   const day = dt.getDate().toString().padStart(2, "0");
   let tableName = prefixName + "_" + year + "_" + month;
+  console.log(tableName);
   const createTable = `CREATE TABLE ${tableName} (
     id int(10) NOT NULL,
     created DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -27,15 +44,22 @@ module.exports = function () {
     updated DATETIME DEFAULT CURRENT_TIMESTAMP
   )`;
 
-  const DBSOURCE = "db_vm.sql";
-  let checkdb = new sqlite3.Database(DBSOURCE, (err) => {
-    checkdb.run(createTable, (err) => {
-      if (err) {
-        console.log("Table Transaction Already Created");
-        return false;
+  db.get(
+    `SELECT name FROM sqlite_master WHERE type='table' AND name="${tableName}"`,
+    function (err, row) {
+      console.log(row);
+      if (row !== undefined) {
+        console.log(
+          `table ${tableName} . cleaning existing records ${row.length}`
+        );
+        callback(err, row);
       } else {
-        return true;
+        console.log("creating table");
+        db.run(createTable, (err) => {
+          console.log("Table TRX Already Created");
+        });
+        callback(null, null);
       }
-    });
-  });
-};
+    }
+  );
+}

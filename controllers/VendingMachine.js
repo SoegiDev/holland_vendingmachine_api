@@ -2,8 +2,9 @@ const crypto = require("crypto");
 const { toBase64 } = require("request/lib/helpers");
 require("dotenv").config();
 const axios = require("axios");
-var checkdb = require("../dbExist");
+const intTrx = require("../init_trx");
 
+const db = require("../services/db");
 // WELCOME//
 module.exports.WelcomeVendingMachine = async (req, res, next) => {
   try {
@@ -12,6 +13,35 @@ module.exports.WelcomeVendingMachine = async (req, res, next) => {
       description: "New Service API for Vending Machine",
     };
     return res.json(JsonData);
+  } catch (ex) {
+    next(ex);
+  }
+};
+
+module.exports.CheckTrxTable = async (req, res, next) => {
+  try {
+    intTrx();
+    const prefixName = "trx";
+    const dt = new Date();
+    const year = dt.getFullYear();
+    const month = (dt.getMonth() + 1).toString().padStart(2, "0");
+    const day = dt.getDate().toString().padStart(2, "0");
+    let tableName = prefixName + "_" + year + "_" + month;
+    let sql = `SELECT *
+           FROM ${tableName}
+           WHERE issync  = ?`;
+    let isSync = 0;
+
+    // first row only
+    const data = db.get(sql, [isSync], (err, row) => {
+      if (err) {
+        return console.error(err.message);
+      }
+      return row
+        ? console.log(row.id, row.name)
+        : console.log(`No playlist found with the Status ${isSync}`);
+    });
+    return res.send(data);
   } catch (ex) {
     next(ex);
   }
@@ -29,19 +59,18 @@ module.exports.ListBanner = async (req, res, next) => {
     console.log(jailbreak);
     let datakey = crypto.createHash("sha1").update(jailbreak).digest("hex");
     let post_string = "key=" + datakey + "&data=" + base64data;
-    let paramUrl = url + "confirm/Other/video/?" + post_string;
-    const dataRet = {
-      b: base64data,
-      getSubs: jailbreak,
+    let paramUrl = url + path + post_string;
+    console.log(paramUrl);
+    const headers = {
+      "Content-Type": "application/json",
     };
+
     axios
-      .get(
-        "https://vm.hollandbakery.co.id/confirm/Other/video/?key=be296ac9d5b8bb41158c85f4d5f13caf45ba8f34&data=eyJ2bWNvZGUiOiJWTV9QTl8wMDIifQ=="
-      )
+      .get(paramUrl, {
+        headers: headers,
+      })
       .then((response) => {
-        // Handle response
-        console.log(response.data);
-        res.json(response.data);
+        res.send(response.data);
       })
       .catch((err) => {
         // Handle errors
@@ -56,29 +85,9 @@ module.exports.ListBanner = async (req, res, next) => {
 // GET LIST Stock
 module.exports.ListStock = async (req, res, next) => {
   try {
-    const { from, to } = req.body;
-    console.log("message", from, to);
-    const messages = await Messages.find({
-      users: {
-        $all: [from, to],
-      },
-    }).sort({ updatedAt: 1 });
-
-    const projectedMessages = messages.map((msg) => {
-      return {
-        id: msg._id,
-        fromSelf: msg.sender.toString() === from,
-        message: msg.message.text,
-        attach: msg.message.attach,
-        type: msg.message.file_type,
-        size: msg.message.file_size,
-        createdAt: msg.createdAt,
-        read: msg.message.read,
-        senderName: msg.senderName,
-        senderPicture: msg.senderPicture,
-      };
-    });
-    res.json(projectedMessages);
+    const vm_id = { vmcode: process.env.VM_ID };
+    let url = process.env.VM_DOCK_URL;
+    //res.json(dataRet);
   } catch (ex) {
     next(ex);
   }
