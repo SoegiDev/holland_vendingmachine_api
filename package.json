@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js",
     "start": "node index.js"
   },
   "keywords": [
@@ -21,6 +22,7 @@
     "express": "^4.18.2",
     "express-useragent": "^1.0.15",
     "md5": "^2.3.0",
+    "nodemon": "^2.0.22",
     "request": "^2.88.2",
     "sqlite3": "^5.1.6"
   }

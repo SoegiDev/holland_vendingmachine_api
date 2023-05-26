@@ -92,17 +92,82 @@ module.exports.ListStock = async (req, res, next) => {
     // CHECK ISSYNC
     let query_check_issync = `SELECT *
     FROM ${getTrxNameTable()}
-    WHERE issync  = 0`;
-    let { rowData, count } = countRows(query_check_issync);
-    GETDATA(paramUrl, headers).then((data) => {
-      const slotServerList = data.data.data;
-      if (data.status === "OK") {
-        res.status(200).send(data);
+    WHERE issync  = ?`;
+    let isSync = 0;
+
+    let trx_count = `SELECT count(*) as count
+    FROM ${getTrxNameTable()}`;
+
+    // first row only
+    db.get(trx_cond, [isSync], (err, row) => {
+      if (err) {
+        console.log("Error List Stock");
+        return console.error(err.message);
+        const resData = {
+          status: "Error",
+          statusDescription: err.message,
+        };
+        res.status(404).send(resData);
+      }
+      if (row) {
+        console.log("GET DATA FROM SERVER");
+        GETDATA(paramUrl, headers).then((data) => {
+          const slotServerList = data.data.data;
+          if (data.status === "OK") {
+            res.status(200).send(data);
+          } else {
+            res.status(500).send(data);
+          }
+        });
       } else {
-        res.status(500).send(data);
+        console.log("Synchronize Data");
+        db.all(trx_count, [], (err, results) => {
+          var len = results[0].count;
+          if (len === 0) {
+            GETDATA(paramUrl, headers).then((data) => {
+              if (data.status === "OK") {
+                let paramslot = [];
+                let insertData = [];
+                const arrayList = data.data.data;
+                arrayList.map((item, index) => {
+                  paramslot.push(item.id_slot);
+                  let insert_slot = `INSERT INTO slot (no_slot,kode_produk,name_produk,onhand,harga_jual,harga_promo,status_promo,image) values(?,?,?,?,?,?,?,?)`;
+                  db.run(
+                    insert_slot,
+                    [
+                      item.vm_slot,
+                      item.sku,
+                      item.sub_brand,
+                      item.qty,
+                      item.product_price,
+                      item.promo_price,
+                      item.promo_status,
+                      item.image,
+                    ],
+                    (err) => {
+                      if (err) {
+                        return console.log(err.message);
+                      }
+                      console.log("Row was added to the table: ${this.lastID}");
+                    }
+                  );
+                });
+                res.status(200).send(data);
+              } else {
+                res.status(500).send(data);
+              }
+            });
+          } else {
+            const resData = {
+              status: "OK",
+              statusDescription: "The Latest Item",
+              totalRow: len,
+            };
+            res.status(200).send(resData);
+          }
+        });
       }
     });
-    //res.status(200).send({ jumlah: count });
   } catch (ex) {
     next(ex);
   }
@@ -161,13 +226,11 @@ async function POSTDATA(paramUrl, head, body, messageSuccess, messageError) {
 }
 
 function countRows(sqlQuery) {
-  let rowData = [];
-  let count = 0;
+  rowData = [];
   db.all(sqlQuery, (error, rows) => {
     rows.forEach((row) => {
       rowData.push(row);
     });
   });
-  count = rowData.length;
-  return { rowData, count };
+  return rowData;
 }
