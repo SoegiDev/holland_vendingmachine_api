@@ -16,7 +16,6 @@ module.exports = function () {
 
 function checkIfExists(callback) {
   var db = new sqlite3.Database(DBSOURCE);
-
   const prefixName = "trx";
   const dt = new Date();
   const year = dt.getFullYear();

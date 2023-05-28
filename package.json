@@ -16,7 +16,9 @@
   "author": "HollandBakery",
   "license": "ISC",
   "dependencies": {
+    "async": "^3.2.4",
     "axios": "^1.4.0",
+    "better-sqlite3": "^8.4.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
