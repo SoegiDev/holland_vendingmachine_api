@@ -114,6 +114,30 @@ module.exports.ListBanner = async (req, res, next) => {
 };
 
 // GET LIST Stock
+module.exports.ListStockOffline = async (req, res, next) => {
+  try {
+    var lastData = countRowsAll("select * from slot order by no_slot asc");
+    if (lastData !== undefined) {
+      const resData = {
+        status: "OK",
+        statusDescription: "Successfully Get Data",
+        data: lastData,
+      };
+      res.status(200).send(resData);
+    } else {
+      const resData = {
+        status: "OK",
+        statusDescription: "Data is Empty",
+        data: null,
+      };
+      res.status(200).send(resData);
+    }
+  } catch (ex) {
+    next(ex);
+  }
+};
+
+// GET LIST Stock
 module.exports.ListStock = async (req, res, next) => {
   try {
     const vm_id = { vmcode: process.env.VM_ID };
