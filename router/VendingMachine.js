@@ -1,14 +1,12 @@
 const {
   WelcomeVendingMachine,
-  ListBanner,
-  CheckTrxTable,
-  ListStock,
   ListStockOffline,
-} = require("../controllers/VendingMachine");
+  ListBannerImageOffline,
+  ListBannerVideoOffline,
+} = require("../controllers/Vending");
 const router = require("express").Router();
 router.get("/welcome", WelcomeVendingMachine);
-router.get("/checktabletrx", CheckTrxTable);
-router.get("/listbanner", ListBanner);
-router.get("/liststock", ListStock);
-router.get("/liststock_offline", ListStockOffline);
+router.get("/get-slot", ListStockOffline);
+router.get("/get-banner-image", ListBannerImageOffline);
+router.get("/get-banner-video", ListBannerVideoOffline);
 module.exports = router;

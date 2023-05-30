@@ -66,4 +66,9 @@ function getTrxNameTable() {
   return tableName;
 }
 
-module.exports = { db, getTrxNameTable };
+function createifNotExists() {
+  db.exec(createTableTranx);
+  return getTrxNameTable();
+}
+
+module.exports = { db, getTrxNameTable, createifNotExists };
