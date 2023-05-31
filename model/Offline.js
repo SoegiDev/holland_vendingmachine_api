@@ -30,7 +30,7 @@ function countdeleteBulk(query) {
   //   const element = item[index];
   //   arr.push(element.vm_slot);
   // }
-  // console.log(arr);
+  console.log(arr);
   //var params = arr.join(", ");
   const stmt = db.prepare(query);
   const row = stmt.run();
