@@ -13,10 +13,11 @@ app.use(express.json());
 app.use(useragent.express());
 //var INITDB = require("./services/init_db");
 const vendingmachineRoute = require("./router/VendingMachine");
-// const paymentRoute = require("./router/Payment");
 const ApiRoute = require("./router/Api");
+const paymentRoute = require("./router/Payment");
 app.use("/vending", vendingmachineRoute);
 app.use("/api", ApiRoute);
+app.use("/payment", paymentRoute);
 app.listen(HTTP_PORT, () => {
   console.log("Server is Running Set %PORT%".replace("%PORT%", HTTP_PORT));
 });
