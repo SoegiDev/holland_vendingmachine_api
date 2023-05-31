@@ -186,7 +186,7 @@ ListBannerImageOnline = async (req, res, next) => {
               item.isactive,
             ];
             var iR = countInsert(queryInsert, dataInsert);
-            if (iR.lastInsertRowid > 0) tempArrayNew.push(item.name);
+            if (iR.lastInsertRowid > 0) tempArrayNew.push(item.id);
           } else {
             var queryUpdate =
               "UPDATE banner set id_banner = ?, banner_name = ?, banner_type = ?, banner_format = ?, fromdate = ?, todate = ?, banner_url = ?, banner_local = ? , active = ? where id_banner =? and banner_name = ? and banner_type = ? and fromdate=?";
@@ -206,7 +206,7 @@ ListBannerImageOnline = async (req, res, next) => {
               item.fromdate,
             ];
             var iR = countUpdate(queryUpdate, dataUpdate);
-            if (iR.changes > 0) tempArrayExist.push(item.name);
+            if (iR.changes > 0) tempArrayExist.push(item.id);
           }
           if (countdata === dataIs.length) {
             break;
@@ -216,7 +216,7 @@ ListBannerImageOnline = async (req, res, next) => {
         }
         tempArrayLast = tempArrayNew.concat(tempArrayExist);
         console.log(tempArrayLast);
-        var queryDelete = `delete from banner where banner_name not in ('${tempArrayLast}')`;
+        var queryDelete = `delete from banner where banner_name not in (${tempArrayLast})`;
         var del = countdeleteBulk(queryDelete);
         if (del.changes > 0) {
           var getData = countRowsAll(
