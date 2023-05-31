@@ -216,7 +216,7 @@ ListBannerImageOnline = async (req, res, next) => {
         }
         tempArrayLast = tempArrayNew.concat(tempArrayExist);
         console.log(tempArrayLast);
-        var queryDelete = `delete from banner where banner_name not in (${tempArrayLast})`;
+        var queryDelete = `delete from banner where banner_name not in ('${tempArrayLast}')`;
         var del = countdeleteBulk(queryDelete);
         if (del.changes > 0) {
           var getData = countRowsAll(
