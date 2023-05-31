@@ -1,1 +1,4 @@
 node_modules
+vm_db.db 
+vm_db.db_shm
+vm_db.db-wal
