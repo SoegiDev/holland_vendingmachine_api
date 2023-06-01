@@ -1,2 +1,2 @@
-GET http://localhost:3000/api/vend/qr-shopee HTTP/1.1
+GET http://localhost:3000/payment/qr-shopee?trx_code=VM_PN_002-2305l10bljje7&product_name=Roti%20Kelapa,Roti%20Coklat%20Keju,Korean%20Garlic%20Cream%20Cheese,&qty_product=3&amount=37100 HTTP/1.1
 content-type: application/json

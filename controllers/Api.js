@@ -186,6 +186,7 @@ ListBannerImageOnline = async (req, res, next) => {
               item.isactive,
             ];
             var iR = countInsert(queryInsert, dataInsert);
+            console.log(iR);
             if (iR.lastInsertRowid > 0) tempArrayNew.push(item.id);
           } else {
             var queryUpdate =
@@ -216,7 +217,7 @@ ListBannerImageOnline = async (req, res, next) => {
         }
         tempArrayLast = tempArrayNew.concat(tempArrayExist);
         console.log(tempArrayLast);
-        var queryDelete = `delete from banner where banner_name not in (${tempArrayLast})`;
+        var queryDelete = `delete from banner where id_banner not in (${tempArrayLast})`;
         var del = countdeleteBulk(queryDelete);
         if (del.changes > 0) {
           var getData = countRowsAll(
@@ -399,4 +400,10 @@ VmTrx = async (req, res, next) => {
   }
 };
 
-module.exports = { ListStockOnline, ListBannerImageOnline, CreateTrx, VmStock };
+module.exports = {
+  ListStockOnline,
+  ListBannerImageOnline,
+  CreateTrx,
+  VmStock,
+  VmTrx,
+};

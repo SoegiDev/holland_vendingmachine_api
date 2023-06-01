@@ -128,6 +128,10 @@ PaymentShopee = async (req, res, next) => {
 
 CheckPaymentShopee = async (req, res, next) => {
   try {
+    var url = process.env.VM_DOCK_URL;
+    var VM_ID = process.env.VM_ID;
+    var VM_NAME = process.env.VM_NAME;
+    var PATH = process.env.PATH_SHOPEE_STATUS_CHECK_POST;
     var params = false;
     const { trx_code } = req.query;
     if (req.query === null || req.query === undefined) {
@@ -146,7 +150,7 @@ CheckPaymentShopee = async (req, res, next) => {
         "accept-encoding": "gzip, deflate",
         "cache-control": "no-cache",
       };
-      POSTDATA(url, body, headers).then((data) => {
+      POSTDATA(url + PATH, body, headers).then((data) => {
         console.log(data);
         if (data.status !== null) {
           if (data.errcode === 1) {
