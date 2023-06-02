@@ -111,9 +111,10 @@ PaymentShopee = async (req, res, next) => {
         "cache-control": "no-cache",
       };
       GETDATA(data_post, headers).then((data) => {
-        console.log(data);
-        if (data.status !== null) {
-          if (data.errcode === 1) {
+        console.log(data.data.status);
+        if (data.data.status !== null) {
+          console.log(data.data.status);
+          if (data.data.status === "1") {
             res.status(200).send(success("SUCCESS", res.statusCode));
           } else {
             res.status(200).send(success("FAILED", res.statusCode));
@@ -139,11 +140,12 @@ CheckPaymentShopee = async (req, res, next) => {
     if (req.query !== null || req.query !== undefined) {
       params = true;
     }
+    var datapost = { id: trx_code };
     if (!params) {
       res.status(404).send(error("FAILED", res.statusCode));
     } else {
       //  var data_post = url + trxCod;
-      var data_post = url + PATH + trx_code;
+      var data_post = url + PATH;
       const headers = {
         "Content-Type": "application/json",
         Accept: "*/*",
@@ -152,10 +154,10 @@ CheckPaymentShopee = async (req, res, next) => {
         "accept-encoding": "gzip, deflate",
         "cache-control": "no-cache",
       };
-      GETDATA(url + PATH, headers).then((data) => {
+      POSTDATA(data_post, datapost, headers).then((data) => {
         console.log(data);
-        if (data.status !== null) {
-          if (data.errcode === 1) {
+        if (data.data.status !== null) {
+          if (data.data.status === "1") {
             res.status(200).send(success("SUCCESS", res.statusCode));
           } else {
             res.status(200).send(success("FAILED", res.statusCode));
