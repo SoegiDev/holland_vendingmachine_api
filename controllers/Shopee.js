@@ -86,20 +86,22 @@ PaymentShopee = async (req, res, next) => {
   try {
     var params = false;
     const { trx_code } = req.query;
-    if (req.query === null || req.query === undefined) {
+    if (req.query !== null || req.query !== undefined) {
       params = true;
     }
     if (!params) {
       res.status(404).send(error("FAILED", res.statusCode));
     } else {
-      var trxCodeParam = base64_encode(trx_code);
+      let buff = new Buffer(trx_code);
+      let base64data = buff.toString("base64");
+      var trxCodeParam = base64data;
       let url = process.env.VM_DOCK_URL;
       var VM_ID = process.env.VM_ID;
       var VM_NAME = process.env.VM_NAME;
       var PATH = process.env.PATH_ORDER_PAYMENT_GET;
 
       var trxCod = "trx_code=" + trxCodeParam;
-      var data_post = url + trxCod;
+      var data_post = url + PATH + trxCod;
       const headers = {
         "Content-Type": "application/json",
         Accept: "*/*",
@@ -134,14 +136,14 @@ CheckPaymentShopee = async (req, res, next) => {
     var PATH = process.env.PATH_SHOPEE_STATUS_CHECK_POST;
     var params = false;
     const { trx_code } = req.query;
-    if (req.query === null || req.query === undefined) {
+    if (req.query !== null || req.query !== undefined) {
       params = true;
     }
     if (!params) {
       res.status(404).send(error("FAILED", res.statusCode));
     } else {
-      var body = { id: trxCodeParam };
-      var data_post = url + trxCod;
+      //  var data_post = url + trxCod;
+      var data_post = url + PATH + trx_code;
       const headers = {
         "Content-Type": "application/json",
         Accept: "*/*",
@@ -150,7 +152,7 @@ CheckPaymentShopee = async (req, res, next) => {
         "accept-encoding": "gzip, deflate",
         "cache-control": "no-cache",
       };
-      POSTDATA(url + PATH, body, headers).then((data) => {
+      GETDATA(url + PATH, headers).then((data) => {
         console.log(data);
         if (data.status !== null) {
           if (data.errcode === 1) {
