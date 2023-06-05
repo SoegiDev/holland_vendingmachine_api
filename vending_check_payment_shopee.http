@@ -1,6 +1,6 @@
-POST http://localhost:3000/payment/check-status-payment-shopee HTTP/1.1
+GET http://localhost:3000/payment/check-status-payment-shopee?trx_code=VM_PN_002-2306lkk4gg7j3& HTTP/1.1
 content-type: application/json
 
 {
-    "id":"VM_PN_002-2306lkk4gg7j3&"
+    
 }

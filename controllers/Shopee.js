@@ -160,9 +160,9 @@ CheckPaymentShopee = async (req, res, next) => {
         "cache-control": "no-cache",
       };
       POSTDATA(data_post, datapost, headers).then((data) => {
-        console.log(data);
-        if (data.data.status !== null) {
-          if (data.data.status === "1") {
+        console.log("Status", data);
+        if (data.data !== null) {
+          if (data.data === "Pembayaran Sukses") {
             res.status(200).send(success("SUCCESS", res.statusCode));
           } else {
             res.status(200).send(success("FAILED", res.statusCode));
