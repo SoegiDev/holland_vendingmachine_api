@@ -364,30 +364,46 @@ VmTrx = async (req, res, next) => {
     var VM_ID = process.env.VM_ID;
     var params = false;
     const { param } = req.query;
-    if (req.query === null || req.query === undefined) {
+    if (req.query !== null || req.query !== undefined) {
       params = true;
     }
     if (!params) {
       res.status(404).send(error("INVALID PARAMETER", res.statusCode));
     } else {
       var jsonParam = JSON.parse(param);
+      console.log("PARAM", jsonParam);
       var datainsert = [
         VM_ID,
         jsonParam["documentno"],
         jsonParam["no_slot"],
         jsonParam["kode_produk"],
+
         jsonParam["name_produk"],
         jsonParam["rear_status"],
         jsonParam["timestamp"],
         jsonParam["error_no"],
         jsonParam["error_msg"],
+
         jsonParam["payment_type"],
         jsonParam["verify_no"],
         jsonParam["harga"],
         jsonParam["harga_jual"],
         0,
       ];
-      var query = `insert into ${tableTrx} (id_vm,documentno,no_slot,kode_produk,name_produk,rear_produk,timestamp,error_no,error_msg,payment_type,verify_no,harga,harga_jual,issync)`;
+      var query = `insert into ${tableTrx} (id_vm,
+        documentno,
+        no_slot,
+        kode_produk,
+        name_produk,
+        rear_status,
+        timestamp,
+        error_no,
+        error_msg,
+        payment_type,
+        verify_no,
+        harga,
+        harga_jual,
+        issync) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
       var insertData = countInsert(query, datainsert);
       if (insertData.lastInsertRowid > 0) {
         res.status(200).send(success("SUCCESS", res.statusCode));

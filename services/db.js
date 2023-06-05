@@ -33,7 +33,7 @@ const createTableSlot = `CREATE TABLE  IF NOT EXISTS slot (
 )`;
 
 const createTableTranx = `CREATE TABLE IF NOT EXISTS ${getTrxNameTable()} (
-  id int(10) NOT NULL,
+  id integer PRIMARY KEY AUTOINCREMENT,
   created DATETIME DEFAULT CURRENT_TIMESTAMP,
   id_vm varchar(100) NOT NULL,
   documentno varchar(60) NOT NULL,

@@ -57,25 +57,30 @@ QrCodeShopee = async (req, res, next) => {
         "accept-encoding": "gzip, deflate",
         "cache-control": "no-cache",
       };
-      GETDATA(data_post, headers).then((data) => {
-        console.log(data);
-        if (data.errcode !== null) {
-          if (data.data.errcode === 0 && data.data.qr_content !== null) {
-            var qrcode = data.data.qr_content;
-            res
-              .status(200)
-              .send(success("SUCCESS", { qrcode }, res.statusCode));
-          } else {
-            if (data.data.errcode == 0) {
-              res.status(200).send(success("NO QR", res.statusCode));
+      GETDATA(data_post, headers)
+        .then((data) => {
+          console.log("Get DATA", data);
+          if (data.data.errcode !== null) {
+            if (data.data.errcode === 0 && data.data.qr_content !== null) {
+              var qrcode = data.data.qr_content;
+              res
+                .status(200)
+                .send(success("SUCCESS", { qrcode }, res.statusCode));
             } else {
-              res.status(200).send(success("NO RF", res.statusCode));
+              if (data.data.errcode === 0) {
+                res.status(200).send(success("NO QR", res.statusCode));
+              } else {
+                res.status(200).send(success("NO RF", res.statusCode));
+              }
             }
+          } else {
+            res.status(200).send(success("NO_RF_API", res.statusCode));
           }
-        } else {
-          res.status(200).send(success("NO_RF_API", res.statusCode));
-        }
-      });
+        })
+        .catch((err) => {
+          // console.log("ERROR", err);
+          res.status(400).send(error(err.message, res.statusCode));
+        });
     }
   } catch (ex) {
     next(ex);
