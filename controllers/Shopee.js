@@ -60,7 +60,7 @@ QrCodeShopee = async (req, res, next) => {
       GETDATA(data_post, headers)
         .then((data) => {
           console.log("Get DATA", data);
-          if (data.data.errcode !== null) {
+          if (data.data !== undefined) {
             if (data.data.errcode === 0 && data.data.qr_content !== null) {
               var qrcode = data.data.qr_content;
               res
@@ -78,7 +78,7 @@ QrCodeShopee = async (req, res, next) => {
           }
         })
         .catch((err) => {
-          // console.log("ERROR", err);
+          console.log("ERROR AXIOS", err);
           res.status(400).send(error(err.message, res.statusCode));
         });
     }
