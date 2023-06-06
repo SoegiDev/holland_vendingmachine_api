@@ -45,6 +45,15 @@ function countUpdate(query, item) {
   console.log("UPDATE data", row);
   return row;
 }
+
+function countUpdateItem(query) {
+  // var params = item.join(", ");
+  // console.log(params);
+  const stmt = db.prepare(query);
+  const row = stmt.run();
+  console.log("UPDATE data Item", row);
+  return row;
+}
 function deleteBannerBulk(itemLast) {
   let arr = [];
   for (let index = 0; index < itemLast.length; index++) {
@@ -84,4 +93,5 @@ module.exports = {
   countRowsAll,
   countdeleteBulk,
   countUpdate,
+  countUpdateItem,
 };

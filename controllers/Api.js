@@ -13,6 +13,7 @@ const {
   countdeleteBulk,
   countRows,
   countUpdate,
+  countUpdateItem,
 } = require("../model/Offline");
 let TESTING = true;
 ListStockOnline = async (req, res, next) => {
@@ -325,21 +326,21 @@ VmStock = async (req, res, next) => {
   try {
     var params = false;
     const { slot } = req.query;
-    if (req.query === null || req.query === undefined) {
+    if (req.query !== null || req.query !== undefined) {
       params = true;
     }
 
     if (!params) {
       res.status(404).send(error("INVALID PARAMETER", res.statusCode));
     } else {
-      var getData = countRowsAll(`select * from slot where slot = ${slot}`);
+      var getData = countRowsAll(`select * from slot where no_slot = ${slot}`);
       if (getData.length > 0) {
         var stockArray = [];
         for (let i = 0; i < getData.length; i++) {
           const item = getData[i];
           var stock_onhand = item.onhand;
           stock_onhand = stock_onhand - 1;
-          var update = countUpdate(
+          var update = countUpdateItem(
             `update slot set onhand = ${stock_onhand} where no_slot =${slot}`
           );
           if (update.changes > 0) {
