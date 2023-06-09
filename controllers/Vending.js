@@ -66,3 +66,24 @@ module.exports.ListBannerVideoOffline = async (req, res, next) => {
     next(ex);
   }
 };
+
+var download = function (uri, filename, callback) {
+  request.head(uri, function (err, res, body) {
+    request(uri).pipe(fs.createWriteStream(filename)).on("close", callback);
+  });
+};
+
+const downloadImageToUrl = (url, filename) => {
+  let client = http;
+  if (url.toString().indexOf("https") === 0) {
+    client = https;
+  }
+  return new Promise((resolve, reject) => {
+    client.get(url, (res) => {
+      res
+        .pipe(fs.createWriteStream(filename))
+        .on("error", reject)
+        .once("close", () => resolve(filename));
+    });
+  });
+};

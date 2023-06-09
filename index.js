@@ -15,6 +15,7 @@ app.use(useragent.express());
 const vendingmachineRoute = require("./router/VendingMachine");
 const ApiRoute = require("./router/Api");
 const paymentRoute = require("./router/Payment");
+app.use(express.static("public"));
 app.use("/vending", vendingmachineRoute);
 app.use("/api", ApiRoute);
 app.use("/payment", paymentRoute);
