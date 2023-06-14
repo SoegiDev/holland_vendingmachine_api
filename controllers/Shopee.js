@@ -116,7 +116,6 @@ PaymentShopee = async (req, res, next) => {
         "cache-control": "no-cache",
       };
       GETDATA(data_post, headers).then((data) => {
-        console.log(data.data.status);
         if (data.data.status !== null) {
           console.log(data.data.status);
           if (data.data.status === "1") {

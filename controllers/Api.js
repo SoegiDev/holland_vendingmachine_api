@@ -542,7 +542,7 @@ CreateTrx = async (req, res, next) => {
     let url = process.env.VM_DOCK_URL;
     var VM_ID = process.env.VM_ID;
     var VM_NAME = process.env.VM_NAME;
-    var PATH = process.env.PATH_TRANSAKSI_PUT;
+    var PATH = process.env.PATH_TRANSAKSI_GET;
     var body = { vm_code: VM_ID };
     const headers = {
       "Content-Type": "application/json",
