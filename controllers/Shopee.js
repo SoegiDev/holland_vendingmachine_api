@@ -9,12 +9,12 @@ const { fail } = require("assert");
 const { success, error } = require("../model/responseApi");
 const { POSTDATA, GETDATA } = require("../model/Online");
 // WELCOME//
-QrCodeShopee = async (req, res, next) => {
+qrcode_shopee = async (req, res, next) => {
   try {
     var params = false;
     const { trx_code, product_name, qty_product, amount } = req.query;
     console.log(req.query);
-    if (req.query !== null || req.query !== undefined) {
+    if (trx_code != null || req.query != undefined) {
       params = true;
     }
 
@@ -87,11 +87,11 @@ QrCodeShopee = async (req, res, next) => {
   }
 };
 
-PaymentShopee = async (req, res, next) => {
+payment_shopee = async (req, res, next) => {
   try {
     var params = false;
     const { trx_code } = req.query;
-    if (req.query !== null || req.query !== undefined) {
+    if (trx_code != null || trx_code != undefined) {
       params = true;
     }
     if (!params) {
@@ -133,7 +133,7 @@ PaymentShopee = async (req, res, next) => {
   }
 };
 
-CheckPaymentShopee = async (req, res, next) => {
+check_status_payment_shopee = async (req, res, next) => {
   try {
     var url = process.env.VM_DOCK_URL;
     var VM_ID = process.env.VM_ID;
@@ -141,10 +141,13 @@ CheckPaymentShopee = async (req, res, next) => {
     var PATH = process.env.PATH_SHOPEE_STATUS_CHECK_POST;
     var params = false;
     const { trx_code } = req.query;
-    if (req.query !== null || req.query !== undefined) {
+    if (trx_code != null || trx_code != undefined) {
       params = true;
     }
     var datapost = { id: trx_code };
+    console.log("DATA POS ", datapost);
+    console.log("params ", params);
+
     if (!params) {
       res.status(404).send(error("FAILED", res.statusCode));
     } else {
@@ -176,4 +179,4 @@ CheckPaymentShopee = async (req, res, next) => {
   }
 };
 
-module.exports = { QrCodeShopee, PaymentShopee, CheckPaymentShopee };
+module.exports = { qrcode_shopee, payment_shopee, check_status_payment_shopee };

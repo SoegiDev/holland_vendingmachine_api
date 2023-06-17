@@ -22,7 +22,7 @@ module.exports.WelcomeVendingMachine = async (req, res, next) => {
 };
 
 // GET LIST Stock
-module.exports.ListStockOffline = async (req, res, next) => {
+module.exports.get_slot = async (req, res, next) => {
   try {
     var getData = countRowsAll("select * from slot order by no_slot asc");
     if (getData.length > 0) {
@@ -36,7 +36,7 @@ module.exports.ListStockOffline = async (req, res, next) => {
 };
 
 // GET LIST BANNER
-module.exports.ListBannerImageOffline = async (req, res, next) => {
+module.exports.get_banner_image = async (req, res, next) => {
   try {
     var getData = countRowsAll(
       `select * from banner where banner_format = 'image' and active = 'Y'`
@@ -52,7 +52,7 @@ module.exports.ListBannerImageOffline = async (req, res, next) => {
 };
 
 // GET LIST BANNER VIDEO
-module.exports.ListBannerVideoOffline = async (req, res, next) => {
+module.exports.get_banner_video = async (req, res, next) => {
   try {
     var getData = countRowsAll(
       `select * from banner where banner_format = 'video' and active = 'Y'`

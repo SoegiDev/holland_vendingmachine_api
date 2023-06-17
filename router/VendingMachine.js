@@ -1,12 +1,12 @@
 const {
   WelcomeVendingMachine,
-  ListStockOffline,
-  ListBannerImageOffline,
-  ListBannerVideoOffline,
+  get_slot,
+  get_banner_image,
+  get_banner_video,
 } = require("../controllers/Vending");
 const router = require("express").Router();
 router.get("/welcome", WelcomeVendingMachine);
-router.get("/get-slot", ListStockOffline);
-router.get("/get-banner-image", ListBannerImageOffline);
-router.get("/get-banner-video", ListBannerVideoOffline);
+router.get("/get-slot", get_slot);
+router.get("/get-banner-image", get_banner_image);
+router.get("/get-banner-video", get_banner_video);
 module.exports = router;
