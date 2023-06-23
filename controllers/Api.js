@@ -137,7 +137,7 @@ async function getSlot(req, res, next) {
   const headers = {
     "Content-Type": "application/json",
   };
-  var getData = countRowsAll(`select * from ${tableTrx} where issync = 0`);
+  var getData = countRowsAll(`select * from ${tableTrx} where issync = 0.0`);
   if (getData.length > 0) vmTrx = true;
   if (vmTrx) {
     var download = function (uri, filename, callback) {
@@ -277,7 +277,7 @@ async function CreateTrx(req, res, next) {
       "accept-encoding": "gzip, deflate",
       "cache-control": "no-cache",
     };
-    var getData = countRowsAll(`select * from ${tableTrx} where issync = 0`);
+    var getData = countRowsAll(`select * from ${tableTrx} where issync = 0.0`);
     console.log("DATA TRX", getData.length);
     if (getData.length > 0) {
       for (let i = 0; i < getData.length; i++) {
@@ -392,7 +392,6 @@ async function VmTrax(req, res, next) {
         jsonParam["timestamp"],
         jsonParam["error_no"],
         jsonParam["error_msg"],
-
         jsonParam["payment_type"],
         jsonParam["verify_no"],
         jsonParam["harga"],

@@ -24,7 +24,7 @@ module.exports = function () {
     verify_no longtext NOT NULL,
     harga double NOT NULL,
     harga_jual double NOT NULL,
-    issync char(1) NOT NULL,
+    issync char(1) NOT NUL DEFAULT 0,
     updated DATETIME DEFAULT CURRENT_TIMESTAMP
   )`;
 
