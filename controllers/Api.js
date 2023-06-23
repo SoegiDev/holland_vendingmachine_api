@@ -286,7 +286,7 @@ async function CreateTrx(req, res, next) {
     if (getData.length > 0) {
       for (let i = 0; i < getData.length; i++) {
         var row = getData[i];
-        $vx_params = {
+        var vx_params = {
           vm_code: row.id_vm,
           transactionId: row.documentno,
           slot: row.no_slot,
@@ -301,10 +301,11 @@ async function CreateTrx(req, res, next) {
           harga: row.harga,
           harga_jual: row.harga_jual,
         };
-        let buff = new Buffer(JSON.stringify($vx_params));
+        console.log(vx_params);
+        let buff = new Buffer(JSON.stringify(vx_params));
         let base64data = buff.toString("base64");
         let jailbreak = base64data.substring(base64data.length - 5);
-        let datakey = crypto.createHash("sha1").update(jailbreak).digest("hex");
+        let dataKey = crypto.createHash("sha1").update(jailbreak).digest("hex");
         //bagian data POSTnya
         var data_post = "key=" + dataKey + "&data=" + base64data;
         let paramUrl = url + PATH + data_post;
@@ -314,16 +315,18 @@ async function CreateTrx(req, res, next) {
             let paramupdate = new Object();
             paramupdate.issync = 1;
             paramupdate.id = id;
-            var iR = countUpdatTrx(paramupdate);
-            if (iR.changes > 0) {
+            var update = countUpdateItem(
+              `update ${tableTrx} set issync = 1 where id =${row.id}`
+            );
+            if (update.changes > 0) {
               console.log("UPdated");
             }
-            res.status(200).send(success("SUCCESS", res.statusCode));
           } else {
             res.status(400).send(error("NO INTERNER", res.statusCode));
           }
         });
       }
+      res.status(200).send(success("SUCCESS", res.statusCode));
     } else {
       res.status(200).send(success("NO TRANSACTION", res.statusCode));
     }
