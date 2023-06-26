@@ -13,7 +13,7 @@ qrcode_shopee = async (req, res, next) => {
   try {
     var params = false;
     const { trx_code, product_name, qty_product, amount } = req.query;
-    console.log(req.query);
+    console.log("RQUEST ", req.query);
     if (trx_code != null || req.query != undefined) {
       params = true;
     }
