@@ -27,4 +27,19 @@ async function POSTDATA(paramUrl, body, head) {
     });
   return datas;
 }
-module.exports = { GETDATA, POSTDATA };
+
+async function PUTDATA(paramUrl, body, head) {
+  let datas = await axios
+    .put(paramUrl, body, {
+      headers: head,
+    })
+    .then((response) => {
+      return response;
+    })
+    .catch((err) => {
+      return err;
+    });
+  return datas;
+}
+
+module.exports = { GETDATA, POSTDATA, PUTDATA };

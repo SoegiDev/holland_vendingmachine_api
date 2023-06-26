@@ -8,7 +8,7 @@ const { success, error, validation } = require("../model/responseApi");
 const fs = require("fs");
 const request = require("request");
 
-const { GETDATA, POSTDATA } = require("../model/Online");
+const { GETDATA, POSTDATA, PUTDATA } = require("../model/Online");
 const {
   countInsert,
   countRowsAll,
@@ -272,7 +272,7 @@ async function CreateTrx(req, res, next) {
     var PATH = process.env.PATH_TRANSAKSI_GET;
     var body = { vm_code: VM_ID };
     const headers = {
-      "Content-Type": "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
       Accept: "*/*",
       "Cache-Control": "no-cache",
       Connection: "keep-alive",
@@ -282,6 +282,15 @@ async function CreateTrx(req, res, next) {
     var getData = countRowsAll(
       `select * from ${tableTrx} where issync = 0 or issync = 0.0`
     );
+
+    PUTDATA(
+      "https://vm.hollandbakery.co.id/confirm/Dataprogres/",
+      body,
+      headers
+    ).then((data) => {
+      console.log("Status", data);
+    });
+    var jumlahData = 0;
     console.log("DATA TRX", getData.length);
     if (getData.length > 0) {
       for (let i = 0; i < getData.length; i++) {
@@ -312,6 +321,7 @@ async function CreateTrx(req, res, next) {
         var id = row.id;
         GETDATA(paramUrl, headers).then((data) => {
           if (!data.err) {
+            jumlahData++;
             let paramupdate = new Object();
             paramupdate.issync = 1;
             paramupdate.id = id;
@@ -322,7 +332,7 @@ async function CreateTrx(req, res, next) {
               console.log("UPdated");
             }
           } else {
-            res.status(400).send(error("NO INTERNER", res.statusCode));
+            res.status(400).send(error("NO INTERNET", res.statusCode));
           }
         });
       }
