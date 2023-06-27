@@ -9,4 +9,5 @@ router.get("/welcome", WelcomeVendingMachine);
 router.get("/get-slot", get_slot);
 router.get("/get-banner-image", get_banner_image);
 router.get("/get-banner-video", get_banner_video);
+
 module.exports = router;

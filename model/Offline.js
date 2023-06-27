@@ -25,11 +25,6 @@ function countInsert(query, item) {
 }
 
 function countdeleteBulk(query) {
-  // let arr = [];
-  // for (let index = 0; index < item.length; index++) {
-  //   const element = item[index];
-  //   arr.push(element.vm_slot);
-  // }
   console.log(query);
   const stmt = db.prepare(query);
   const row = stmt.run();

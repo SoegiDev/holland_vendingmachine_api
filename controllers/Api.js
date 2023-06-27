@@ -310,7 +310,6 @@ async function CreateTrx(req, res, next) {
           harga: row.harga,
           harga_jual: row.harga_jual,
         };
-        console.log(vx_params);
         let buff = new Buffer(JSON.stringify(vx_params));
         let base64data = buff.toString("base64");
         let jailbreak = base64data.substring(base64data.length - 5);
