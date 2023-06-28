@@ -7,13 +7,28 @@ const {
   countInsert,
 } = require("../model/Offline");
 let TESTING = true;
+
+module.exports.getVMAccount = async (req, res, next) => {
+  try {
+    if (process.env.VM_ID === undefined) {
+      res.status(200).send(success("No Data", res.statusCode));
+    } else {
+      const VMAccount = {
+        vm_id: process.env.VM_ID,
+        vm_name: process.env.VM_NAME,
+      };
+      res.status(200).send(success("OK", { data: VMAccount }, res.statusCode));
+    }
+  } catch (ex) {
+    next(ex);
+  }
+};
 // WELCOME//
 module.exports.WelcomeVendingMachine = async (req, res, next) => {
   try {
     const JsonData = {
       title: "New VM API",
       description: "New Service API for Vending Machine",
-      dbName: getTrxNameTable(),
     };
     return res.json(JsonData);
   } catch (ex) {
