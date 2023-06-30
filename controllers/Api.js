@@ -147,6 +147,7 @@ async function getSlot(req, res, next) {
         request(uri).pipe(fs.createWriteStream(filename)).on("close", callback);
       });
     };
+
     GETDATA(paramUrl, headers).then((data) => {
       let countdata = 0;
       if (data.status === 200) {
@@ -224,6 +225,7 @@ async function getSlot(req, res, next) {
           }
         }
         tempArrayLast = tempArrayNew.concat(tempArrayExist);
+        console.log(tempArrayLast);
         var queryDelete = `delete from slot where no_slot not in (${tempArrayLast})`;
         var del = countdeleteBulk(queryDelete);
         if (del.changes > 0) {
