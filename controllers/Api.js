@@ -140,7 +140,11 @@ async function getSlot(req, res, next) {
   var getData = countRowsAll(
     `select * from ${tableTrx} where issync = 0 or issync = 0.0`
   );
-  if (getData.length > 0) vmTrx = true;
+  if (getData.length > 0) {
+    vmTrx = true;
+  } else {
+    vmTrx = true;
+  }
   if (vmTrx) {
     var download = function (uri, filename, callback) {
       request.head(uri, function (err, res, body) {
@@ -149,6 +153,7 @@ async function getSlot(req, res, next) {
     };
 
     GETDATA(paramUrl, headers).then((data) => {
+      console.log("TEST ", data);
       let countdata = 0;
       if (data.status === 200) {
         const slotServerList = data.data.data;
@@ -183,6 +188,7 @@ async function getSlot(req, res, next) {
           countdata += 1;
           var query = `select * from slot where no_slot = ${dataSlot.vm_slot}`;
           var check = countRows(query);
+          console.log("KKK ", check);
           if (check === undefined) {
             var queryInsert =
               "INSERT INTO slot (no_slot,kode_produk,name_produk,onhand,harga_jual,harga_promo,status_promo,image) values(?,?,?,?,?,?,?,?)";

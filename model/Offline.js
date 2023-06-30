@@ -21,6 +21,8 @@ function countInsert(query, item) {
   // var params = item.join(", ");
   const stmt = db.prepare(query);
   const row = stmt.run(item);
+
+  console.log("INSERT", row);
   return row;
 }
 
