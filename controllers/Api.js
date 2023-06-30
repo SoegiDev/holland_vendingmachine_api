@@ -17,7 +17,7 @@ const {
   countUpdate,
   countUpdateItem,
 } = require("../model/Offline");
-let TESTING = true;
+let TESTING = false;
 
 async function getBanner(req, res, next) {
   const vm_id = { vmcode: process.env.VM_ID };
