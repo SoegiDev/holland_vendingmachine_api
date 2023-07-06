@@ -153,7 +153,6 @@ async function getSlot(req, res, next) {
     };
 
     GETDATA(paramUrl, headers).then((data) => {
-      console.log("TEST ", data);
       let countdata = 0;
       if (data.status === 200) {
         const slotServerList = data.data.data;
@@ -188,7 +187,6 @@ async function getSlot(req, res, next) {
           countdata += 1;
           var query = `select * from slot where no_slot = ${dataSlot.vm_slot}`;
           var check = countRows(query);
-          console.log("KKK ", check);
           if (check === undefined) {
             var queryInsert =
               "INSERT INTO slot (no_slot,kode_produk,name_produk,onhand,harga_jual,harga_promo,status_promo,image) values(?,?,?,?,?,?,?,?)";
@@ -206,7 +204,7 @@ async function getSlot(req, res, next) {
             if (iR.lastInsertRowid > 0) tempArrayNew.push(dataSlot.vm_slot);
           } else {
             var queryUpdate =
-              "UPDATE slot set no_slot = ?,kode_produk = ?,name_produk = ?,onhand = ?,harga_jual = ?,harga_promo = ?,status_promo = ?,image = ? where name_produk =? and onhand = ? and harga_jual = ? and harga_promo = ?";
+              "UPDATE slot set no_slot = ?,kode_produk = ?,name_produk = ?,onhand = ?,harga_jual = ?,harga_promo = ?,status_promo = ?,image = ? where no_slot = ? and kode_produk = ? and name_produk = ? and onhand = ? and harga_jual = ? and harga_promo = ? and status_promo = ?";
             var dataUpdate = [
               dataSlot.vm_slot,
               dataSlot.sku,
@@ -216,10 +214,13 @@ async function getSlot(req, res, next) {
               dataSlot.promo_price,
               dataSlot.promo_status,
               dataSlot.image,
+              dataSlot.vm_slot,
+              dataSlot.sku,
               dataSlot.sub_brand,
               dataSlot.qty,
               dataSlot.product_price,
               dataSlot.promo_price,
+              dataSlot.promo_status,
             ];
             var iR = countUpdate(queryUpdate, dataUpdate);
             if (iR.changes > 0) tempArrayExist.push(dataSlot.vm_slot);
@@ -231,7 +232,6 @@ async function getSlot(req, res, next) {
           }
         }
         tempArrayLast = tempArrayNew.concat(tempArrayExist);
-        console.log(tempArrayLast);
         var queryDelete = `delete from slot where no_slot not in (${tempArrayLast})`;
         var del = countdeleteBulk(queryDelete);
         if (del.changes > 0) {

@@ -13,7 +13,6 @@ function countRows(sqlQuery) {
 function countRowsAll(sqlQuery) {
   const stmt = db.prepare(sqlQuery);
   const row = stmt.all();
-  console.log("GetAll", row);
   return row;
 }
 
@@ -21,25 +20,27 @@ function countInsert(query, item) {
   // var params = item.join(", ");
   const stmt = db.prepare(query);
   const row = stmt.run(item);
-
-  console.log("INSERT", row);
   return row;
 }
 
 function countdeleteBulk(query) {
-  console.log(query);
   const stmt = db.prepare(query);
   const row = stmt.run();
+  return row;
+}
+function countDeleteId(query, item) {
+  // var params = item.join(", ");
+  // console.log(params);
+  const stmt = db.prepare(query);
+  const row = stmt.run(item);
   return row;
 }
 
 function countUpdate(query, item) {
   // var params = item.join(", ");
   // console.log(params);
-  console.log(item);
   const stmt = db.prepare(query);
   const row = stmt.run(item);
-  console.log("UPDATE data", row);
   return row;
 }
 
@@ -58,7 +59,6 @@ function deleteBannerBulk(itemLast) {
   }
 
   var params = arr.join(", ");
-  console.log("ASD", params);
   const stmt = db.prepare("delete from banner where banner_name in (?)");
   const row = stmt.run(params);
   console.log(row);
