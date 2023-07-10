@@ -17,7 +17,7 @@ const {
   countUpdate,
   countUpdateItem,
 } = require("../model/Offline");
-let TESTING = true;
+let TESTING = false;
 
 async function getBanner(req, res, next) {
   const vm_id = { vmcode: process.env.VM_ID };
@@ -226,7 +226,6 @@ async function getSlot(req, res, next) {
           }
         }
         tempArrayLast += tempArrayNew.concat();
-        //tempArrayLast += tempArrayExist.concat();
         var queryDelete = `delete from slot where no_slot not in (${tempArrayLast})`;
         var del = countdeleteBulk(queryDelete);
         if (del.changes > 0) {
