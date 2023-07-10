@@ -225,15 +225,28 @@ async function getSlot(req, res, next) {
             continue;
           }
         }
-        tempArrayLast += tempArrayNew.concat();
-        var queryDelete = `delete from slot where no_slot not in (${tempArrayLast})`;
-        var del = countdeleteBulk(queryDelete);
-        if (del.changes > 0) {
-          var getData = countRowsAll("select * from slot order by no_slot asc");
-          if (getData.length > 0) {
-            return true;
+        tempArrayLast = tempArrayNew.concat();
+        if (tempArrayLast.length > 0) {
+          var queryDelete = `delete from slot where no_slot not in (${tempArrayLast})`;
+          var del = countdeleteBulk(queryDelete);
+          if (del.changes > 0) {
+            var getData = countRowsAll(
+              "select * from slot order by no_slot asc"
+            );
+            if (getData.length > 0) {
+              return true;
+            } else {
+              return true;
+            }
           } else {
-            return true;
+            var getData = countRowsAll(
+              "select * from slot order by no_slot asc"
+            );
+            if (getData.length > 0) {
+              return true;
+            } else {
+              return true;
+            }
           }
         } else {
           var getData = countRowsAll("select * from slot order by no_slot asc");
