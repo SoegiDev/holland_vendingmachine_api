@@ -204,7 +204,7 @@ async function getSlot(req, res, next) {
             if (iR.lastInsertRowid > 0) tempArrayNew.push(dataSlot.vm_slot);
           } else {
             var queryUpdate =
-              "UPDATE slot set no_slot = ?,kode_produk = ?,name_produk = ?,onhand = ?,harga_jual = ?,harga_promo = ?,status_promo = ?,image = ? where no_slot = ? and kode_produk = ? and name_produk = ? and onhand = ? and harga_jual = ? and harga_promo = ? and status_promo = ?";
+              "UPDATE slot set no_slot = ?,kode_produk = ?,name_produk = ?,onhand = ?,harga_jual = ?,harga_promo = ?,status_promo = ?,image = ? where no_slot = ?";
             var dataUpdate = [
               dataSlot.vm_slot,
               dataSlot.sku,
@@ -215,12 +215,6 @@ async function getSlot(req, res, next) {
               dataSlot.promo_status,
               dataSlot.image,
               dataSlot.vm_slot,
-              dataSlot.sku,
-              dataSlot.sub_brand,
-              dataSlot.qty,
-              dataSlot.product_price,
-              dataSlot.promo_price,
-              dataSlot.promo_status,
             ];
             var iR = countUpdate(queryUpdate, dataUpdate);
             if (iR.changes > 0) tempArrayExist.push(dataSlot.vm_slot);
@@ -231,7 +225,8 @@ async function getSlot(req, res, next) {
             continue;
           }
         }
-        tempArrayLast = tempArrayNew.concat(tempArrayExist);
+        tempArrayLast += tempArrayNew.concat();
+        //tempArrayLast += tempArrayExist.concat();
         var queryDelete = `delete from slot where no_slot not in (${tempArrayLast})`;
         var del = countdeleteBulk(queryDelete);
         if (del.changes > 0) {
@@ -253,6 +248,119 @@ async function getSlot(req, res, next) {
         return true;
       }
     });
+    // GETDATAOLD(paramUrl, headers).then((data) => {
+    //   let countdata = 0;
+    //   if (data.status === 200) {
+    //     const slotServerList = data.data.data;
+    //     let exists = false;
+    //     const dataIs = data.data.data;
+    //     dataLength = dataIs.length;
+    //     let tempArrayExist = [];
+    //     let tempArrayNew = [];
+    //     let tempArrayLast = [];
+    //     for (let i = 0; i < dataIs.length; i++) {
+    //       var dataSlot = dataIs[i];
+    //       console.log("DOWNLOAD ");
+    //       try {
+    //         if (
+    //           fs.existsSync(`./public/images/` + dataSlot.sub_brand + `.jpg`)
+    //         ) {
+    //           //file exists
+    //         } else {
+    //           download(
+    //             dataSlot.image,
+    //             `./public/images/` + dataSlot.sub_brand + ".jpg",
+    //             function () {
+    //               console.log("done");
+    //             }
+    //           );
+    //         }
+    //       } catch (err) {
+    //         console.error(err);
+    //       }
+
+    //       if (TESTING) dataSlot.promo_price = 1;
+    //       countdata += 1;
+    //       var query = `select * from slot where no_slot = ${dataSlot.vm_slot}`;
+    //       var check = countRows(query);
+    //       if (check === undefined) {
+    //         var queryInsert =
+    //           "INSERT INTO slot (no_slot,kode_produk,name_produk,onhand,harga_jual,harga_promo,status_promo,image) values(?,?,?,?,?,?,?,?)";
+    //         var dataInsert = [
+    //           dataSlot.vm_slot,
+    //           dataSlot.sku,
+    //           dataSlot.sub_brand,
+    //           dataSlot.qty,
+    //           dataSlot.product_price,
+    //           dataSlot.promo_price,
+    //           dataSlot.promo_status,
+    //           dataSlot.image,
+    //         ];
+    //         var iR = countInsert(queryInsert, dataInsert);
+    //         if (iR.lastInsertRowid > 0) tempArrayNew.push(dataSlot.vm_slot);
+    //       } else {
+    //         var queryUpdate =
+    //           "UPDATE slot set no_slot = ?,kode_produk = ?,name_produk = ?,onhand = ?,harga_jual = ?,harga_promo = ?,status_promo = ?,image = ? where no_slot = ? and kode_produk = ? and name_produk = ? and onhand = ? and harga_jual = ? and harga_promo = ? and status_promo = ?";
+    //         var dataUpdate = [
+    //           dataSlot.vm_slot,
+    //           dataSlot.sku,
+    //           dataSlot.sub_brand,
+    //           dataSlot.qty,
+    //           dataSlot.product_price,
+    //           dataSlot.promo_price,
+    //           dataSlot.promo_status,
+    //           dataSlot.image,
+    //           dataSlot.vm_slot,
+    //           dataSlot.sku,
+    //           dataSlot.sub_brand,
+    //           dataSlot.qty,
+    //           dataSlot.product_price,
+    //           dataSlot.promo_price,
+    //           dataSlot.promo_status,
+    //         ];
+    //         var iR = countUpdate(queryUpdate, dataUpdate);
+    //         if (iR.changes > 0) tempArrayExist.push(dataSlot.vm_slot);
+    //       }
+    //       if (countdata === dataIs.length) {
+    //         break;
+    //       } else {
+    //         continue;
+    //       }
+    //     }
+    //     tempArrayLast = tempArrayNew.concat();
+    //     var queryDelete = `delete from slot where no_slot not in (${tempArrayLast})`;
+    //     var del = countdeleteBulk(queryDelete);
+    //     if (del.changes > 0) {
+    //       var queryInsert =
+    //         "INSERT INTO slot (no_slot,kode_produk,name_produk,onhand,harga_jual,harga_promo,status_promo,image) values(?,?,?,?,?,?,?,?)";
+    //       var dataInsert = [
+    //         dataSlot.vm_slot,
+    //         dataSlot.sku,
+    //         dataSlot.sub_brand,
+    //         dataSlot.qty,
+    //         dataSlot.product_price,
+    //         dataSlot.promo_price,
+    //         dataSlot.promo_status,
+    //         dataSlot.image,
+    //       ];
+    //       var getData = countRowsAll("select * from slot order by no_slot asc");
+    //       if (getData.length > 0) {
+    //         return true;
+    //       } else {
+    //         return true;
+    //       }
+    //     } else {
+    //       var getData = countRowsAll("select * from slot order by no_slot asc");
+    //       if (getData.length > 0) {
+    //         return true;
+    //       } else {
+    //         return true;
+    //       }
+    //     }
+    //   } else {
+    //     return true;
+    //   }
+    // });
   }
   return false;
 }
